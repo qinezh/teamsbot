@@ -1,4 +1,4 @@
-import { BotBuilderCloudAdapter } from "@microsoft/teamsfx";
+import { BotBuilderCloudAdapter } from "../../sdk";
 import ConversationBot = BotBuilderCloudAdapter.ConversationBot;
 import config from "./config";
 

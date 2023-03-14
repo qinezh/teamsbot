@@ -260,7 +260,7 @@ export async function handleMessageExtensionQueryWithSSO(
   }
   return await executionWithTokenAndConfig(
     context,
-    config ?? {},
+    config ?? {} as any,
     initiateLoginEndpoint,
     scopes,
     logic
