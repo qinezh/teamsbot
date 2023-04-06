@@ -91,6 +91,9 @@ export interface NotificationTarget {
 
 /**
  * Interface for a storage provider that stores and retrieves notification target references.
+ * 
+ * @deprecated Use {@link ConversationReferenceStore} to customize the way
+ * to persist bot notification connections instead.
  */
 export interface NotificationTargetStorage {
   /**
