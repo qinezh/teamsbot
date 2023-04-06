@@ -529,9 +529,9 @@ export class NotificationBot {
       throw new Error("NotificationBot has not been initialized.");
     }
 
-    const references = await this.conversationReferenceStore.getAll();
+    const references = await this.conversationReferenceStore.list();
     const targets: TeamsBotInstallation[] = [];
-    for (const reference of references) {
+    for (const reference of references.data) {
       // validate connection
       let valid = true;
       await this.adapter.continueConversation(reference, async (context) => {
@@ -548,7 +548,7 @@ export class NotificationBot {
       if (valid) {
         targets.push(new TeamsBotInstallation(this.adapter, reference));
       } else {
-        await this.conversationReferenceStore.delete(reference);
+        await this.conversationReferenceStore.remove(utils.getKey(reference), reference);
       }
     }
 

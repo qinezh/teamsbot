@@ -16,7 +16,7 @@ import {
   NotificationTarget,
   NotificationTargetType,
 } from "../conversation/interface";
-import { ConversationReferenceStore } from "../conversation/storage";
+import { ConversationReferenceStore } from "./interface";
 
 /**
  * Send a plain text message to a notification target.

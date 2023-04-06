@@ -19,7 +19,7 @@ import {
   NotificationTargetType,
   MessageResponse,
 } from "../conversation/interface";
-import { NotificationOptions } from "./interface";
+import { ConversationReferenceStore, NotificationOptions } from "./interface";
 import { NotificationMiddleware } from "../conversation/middlewares/notificationMiddleware";
 import { DefaultConversationReferenceStore, LocalFileStorage } from "../conversation/storage";
 import * as utils from "../conversation/utils";
@@ -543,7 +543,7 @@ export class TeamsBotInstallation implements NotificationTarget {
  * Provide utilities to send notification to varies targets (e.g., member, group, channel).
  */
 export class NotificationBot {
-  private readonly conversationReferenceStore: DefaultConversationReferenceStore;
+  private readonly conversationReferenceStore: ConversationReferenceStore;
   private readonly adapter: CloudAdapter;
   private readonly botAppId: string;
 
@@ -557,13 +557,18 @@ export class NotificationBot {
    * @param options - The initialize options
    */
   public constructor(adapter: CloudAdapter, options?: NotificationOptions) {
-    const storage =
-      options?.storage ??
-      new LocalFileStorage(
-        path.resolve(process.env.RUNNING_ON_AZURE === "1" ? process.env.TEMP ?? "./" : "./")
-      );
+    if (options.store) {
+      this.conversationReferenceStore = options.store;
+    } else {
+      const storage =
+        options?.storage ??
+        new LocalFileStorage(
+          path.resolve(process.env.RUNNING_ON_AZURE === "1" ? process.env.TEMP ?? "./" : "./")
+        );
 
-    this.conversationReferenceStore = new DefaultConversationReferenceStore(storage);
+      this.conversationReferenceStore = new DefaultConversationReferenceStore(storage);
+    }
+
     this.adapter = adapter.use(
       new NotificationMiddleware({
         conversationReferenceStore: this.conversationReferenceStore,
@@ -585,9 +590,9 @@ export class NotificationBot {
       throw new Error("NotificationBot has not been initialized.");
     }
 
-    const references = await this.conversationReferenceStore.getAll();
+    const references = await this.conversationReferenceStore.list();
     const targets: TeamsBotInstallation[] = [];
-    for (const reference of references) {
+    for (const reference of references.data) {
       // validate connection
       let valid = true;
       await this.adapter.continueConversationAsync(this.botAppId, reference, async (context) => {
@@ -604,7 +609,7 @@ export class NotificationBot {
       if (valid) {
         targets.push(new TeamsBotInstallation(this.adapter, reference, this.botAppId));
       } else {
-        await this.conversationReferenceStore.delete(reference);
+        await this.conversationReferenceStore.remove(utils.getKey(reference), reference);
       }
     }
 
