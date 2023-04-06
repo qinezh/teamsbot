@@ -602,6 +602,18 @@ export class NotificationBot {
   }
 
   /**
+   * create a {@link TeamsBotInstallation} instance with conversation reference.
+   * 
+   * @param conversationReference - The bound `ConversationReference`.
+   * @returns - The {@link TeamsBotInstallation} instance.
+   */
+  public buildTeamsBotInstallation(
+    conversationReference: Partial<ConversationReference>
+  ): TeamsBotInstallation {
+    return new TeamsBotInstallation(this.adapter, conversationReference, this.botAppId);
+  }
+
+  /**
    * Gets a pagined list of targets where the bot is installed.
    * 
    * @remarks
