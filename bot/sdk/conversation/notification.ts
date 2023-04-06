@@ -21,7 +21,7 @@ import {
   MessageResponse,
 } from "./interface";
 import { NotificationMiddleware } from "./middlewares/notificationMiddleware";
-import { ConversationReferenceStore, LocalFileStorage } from "./storage";
+import { DefaultConversationReferenceStore, LocalFileStorage } from "./storage";
 import * as utils from "./utils";
 
 /**
@@ -489,7 +489,7 @@ export class TeamsBotInstallation implements NotificationTarget {
  * @deprecated Use `BotBuilderCloudAdapter.NotificationBot` instead.
  */
 export class NotificationBot {
-  private readonly conversationReferenceStore: ConversationReferenceStore;
+  private readonly conversationReferenceStore: DefaultConversationReferenceStore;
   private readonly adapter: BotFrameworkAdapter;
 
   /**
@@ -508,7 +508,7 @@ export class NotificationBot {
         path.resolve(process.env.RUNNING_ON_AZURE === "1" ? process.env.TEMP ?? "./" : "./")
       );
 
-    this.conversationReferenceStore = new ConversationReferenceStore(storage);
+    this.conversationReferenceStore = new DefaultConversationReferenceStore(storage);
     this.adapter = adapter.use(
       new NotificationMiddleware({
         conversationReferenceStore: this.conversationReferenceStore,

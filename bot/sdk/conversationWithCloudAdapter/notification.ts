@@ -21,7 +21,7 @@ import {
 } from "../conversation/interface";
 import { NotificationOptions } from "./interface";
 import { NotificationMiddleware } from "../conversation/middlewares/notificationMiddleware";
-import { ConversationReferenceStore, LocalFileStorage } from "../conversation/storage";
+import { DefaultConversationReferenceStore, LocalFileStorage } from "../conversation/storage";
 import * as utils from "../conversation/utils";
 
 /**
@@ -543,7 +543,7 @@ export class TeamsBotInstallation implements NotificationTarget {
  * Provide utilities to send notification to varies targets (e.g., member, group, channel).
  */
 export class NotificationBot {
-  private readonly conversationReferenceStore: ConversationReferenceStore;
+  private readonly conversationReferenceStore: DefaultConversationReferenceStore;
   private readonly adapter: CloudAdapter;
   private readonly botAppId: string;
 
@@ -563,7 +563,7 @@ export class NotificationBot {
         path.resolve(process.env.RUNNING_ON_AZURE === "1" ? process.env.TEMP ?? "./" : "./")
       );
 
-    this.conversationReferenceStore = new ConversationReferenceStore(storage);
+    this.conversationReferenceStore = new DefaultConversationReferenceStore(storage);
     this.adapter = adapter.use(
       new NotificationMiddleware({
         conversationReferenceStore: this.conversationReferenceStore,

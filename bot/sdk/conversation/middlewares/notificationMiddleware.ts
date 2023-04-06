@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 import { Activity, Middleware, TurnContext } from "botbuilder";
-import { ConversationReferenceStore } from "../storage";
+import { DefaultConversationReferenceStore } from "../storage";
 import { cloneConversation } from "../utils";
 
 /**
@@ -21,14 +21,14 @@ enum ActivityType {
  * @internal
  */
 export interface NotificationMiddlewareOptions {
-  conversationReferenceStore: ConversationReferenceStore;
+  conversationReferenceStore: DefaultConversationReferenceStore;
 }
 
 /**
  * @internal
  */
 export class NotificationMiddleware implements Middleware {
-  private readonly conversationReferenceStore: ConversationReferenceStore;
+  private readonly conversationReferenceStore: DefaultConversationReferenceStore;
 
   constructor(options: NotificationMiddlewareOptions) {
     this.conversationReferenceStore = options.conversationReferenceStore;

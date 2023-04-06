@@ -110,7 +110,7 @@ export class LocalFileStorage implements NotificationTargetStorage {
 /**
  * @internal
  */
-export class ConversationReferenceStore {
+export class DefaultConversationReferenceStore {
   private readonly storage: NotificationTargetStorage;
 
   constructor(storage: NotificationTargetStorage) {
