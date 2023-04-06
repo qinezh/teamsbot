@@ -132,14 +132,24 @@ export interface ConversationReferenceStore {
   list(
     pageSize?: number,
     continuationToken?: string
-  ): Promise<PagedData<Partial<ConversationReference>[]>>;
+  ): Promise<PagedData<Partial<ConversationReference>>>;
 }
 
 export interface ConversationReferenceStoreAddOptions {
+  /**
+   * Whether to overwrite existing conversation reference.
+   */
   overwrite?: boolean;
 }
 
 export interface PagedData<T> {
-  data: T;
-  continuationToken?: string;
+  /**
+   * Page of data.
+   */
+  data: T[];
+
+  /**
+   * Token used to page through multiple pages.
+   */
+  continuationToken: string;
 }

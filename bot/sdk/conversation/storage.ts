@@ -147,10 +147,11 @@ export class DefaultConversationReferenceStore implements ConversationReferenceS
     return true;
   }
 
-  async list(pageSize?: number, continuationToken?: string): Promise<PagedData<Partial<ConversationReference>[]>> {
+  async list(pageSize?: number, continuationToken?: string): Promise<PagedData<Partial<ConversationReference>>> {
     const data = await this.storage.list();
     return {
-      data
+      data,
+      continuationToken: undefined,
     }
   }
 }
