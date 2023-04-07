@@ -1,6 +1,7 @@
 import { BotBuilderCloudAdapter } from "../../sdk";
 import ConversationBot = BotBuilderCloudAdapter.ConversationBot;
 import config from "./config";
+import { BlobStore } from "../blobStore";
 
 // Create bot.
 export const bot = new ConversationBot({
@@ -14,5 +15,6 @@ export const bot = new ConversationBot({
   // Enable notification
   notification: {
     enabled: true,
+    store: new BlobStore(config.blobConnectionString, config.blobContainerName),
   },
 });

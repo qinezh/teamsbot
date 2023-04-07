@@ -12,7 +12,7 @@ import {
 import { ErrorWithCode, ErrorCode, ErrorMessage } from "../core/errors";
 import { formatString } from "../util/utils";
 import { MessageResponse, NotificationTarget, NotificationTargetType } from "./interface";
-import { ConversationReferenceStore } from "./storage";
+import { ConversationReferenceStore } from "../conversationWithCloudAdapter/interface";
 
 /**
  * Send a plain text message to a notification target.
