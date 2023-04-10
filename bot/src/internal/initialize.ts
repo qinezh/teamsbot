@@ -2,6 +2,14 @@ import { BotBuilderCloudAdapter } from "../../sdk";
 import ConversationBot = BotBuilderCloudAdapter.ConversationBot;
 import config from "./config";
 import { BlobStore } from "../blobStore";
+import { CosmosStore } from "../cosmosStore";
+
+// export const blobStore = new BlobStore(config.blobConnectionString, config.blobContainerName);
+export const cosmosStore = new CosmosStore(
+  config.cosmosConnectionString,
+  config.cosmosDatabaseName,
+  config.cosmosContainerName,
+);
 
 // Create bot.
 export const bot = new ConversationBot({
@@ -15,6 +23,6 @@ export const bot = new ConversationBot({
   // Enable notification
   notification: {
     enabled: true,
-    store: new BlobStore(config.blobConnectionString, config.blobContainerName),
+    store: cosmosStore,
   },
 });

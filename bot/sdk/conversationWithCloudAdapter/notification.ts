@@ -532,7 +532,7 @@ export class TeamsBotInstallation implements NotificationTarget {
       const pagedData = await this.getPagedMembers(undefined, continuationToken);
       continuationToken = pagedData.continuationToken;
       members.push(...pagedData.data);
-    } while (continuationToken !== undefined);
+    } while (continuationToken);
 
     return members;
   }
@@ -605,12 +605,16 @@ export class NotificationBot {
    * create a {@link TeamsBotInstallation} instance with conversation reference.
    * 
    * @param conversationReference - The bound `ConversationReference`.
-   * @returns - The {@link TeamsBotInstallation} instance.
+   * @returns - The {@link TeamsBotInstallation} instance or null.
    */
   public buildTeamsBotInstallation(
     conversationReference: Partial<ConversationReference>
-  ): TeamsBotInstallation {
-    return new TeamsBotInstallation(this.adapter, conversationReference, this.botAppId);
+  ): TeamsBotInstallation | null {
+    if (conversationReference) {
+      return new TeamsBotInstallation(this.adapter, conversationReference, this.botAppId);
+    } else {
+      return null;
+    }
   }
 
   /**
@@ -678,7 +682,7 @@ export class NotificationBot {
       const result = await this.getPagedInstallations(undefined, continuationToken);
       continuationToken = result.continuationToken;
       targets.push(...result.data);
-    } while (continuationToken !== undefined);
+    } while (continuationToken);
 
     return targets;
   }
