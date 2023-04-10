@@ -72,6 +72,7 @@ export class CosmosStore implements ConversationReferenceStore {
         }
     }
 
+    // Get user's conversation reference by user's AAD object id
     public async getUserByUserId(userId: string): Promise<Partial<ConversationReference>> {
         const container = await this.initialize();
         const querySpec = {
@@ -81,6 +82,17 @@ export class CosmosStore implements ConversationReferenceStore {
         const { resources } = await container.items.query(querySpec).fetchAll();
         return resources.length > 0 ? resources[0] : undefined;
     }
+
+    // Get user's conversation reference by user's email
+    public async getUserByUserEmail(userEmail: string): Promise<Partial<ConversationReference>> {
+        const userId = await this.getUserIdByUserEmail(userEmail);
+        return userId ? await this.getUserByUserId(userId) : undefined;
+    }
+
+    // Get user's AAD object id by user's email from another service, e.g. Graph API
+    private async getUserIdByUserEmail(userEmail: string): Promise<string> {
+        throw new Error("Method not implemented.");
+    }        
 
     // Initialize to create container if not exists yet
     private async initialize(): Promise<Container> {

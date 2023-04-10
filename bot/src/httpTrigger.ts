@@ -55,6 +55,8 @@ const httpTrigger: AzureFunction = async function (
 
   // You can also find someone and notify the individual person
   const conversationReference = await cosmosStore.getUserByUserId("92d17b4c-0325-46cb-9b5f-c3ea6964bef6");
+  // const conversationReference = await cosmosStore.getUserByUserEmail("someone@consto.com");
+  
   const installation = bot.notification.buildTeamsBotInstallation(conversationReference);
   await installation?.sendAdaptiveCard(
     AdaptiveCards.declare<CardData>(notificationTemplate).render({
